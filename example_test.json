@@ -1,0 +1,42 @@
+{
+    "patient1": {
+        "image_list": [ 
+            [
+                "./examples/patient1/patient1_images2.nii.gz",
+                "./examples/patient1/patient1_images5.nii.gz",
+                "./examples/patient1/patient1_images3.nii.gz",
+                "./examples/patient1/patient1_images4.nii.gz",
+                "./examples/patient1/patient1_images1.nii.gz"
+            ],
+            [
+                "./examples/patient1/patient1_images2.nii.gz",
+                "./examples/patient1/patient1_images5.nii.gz",
+                "./examples/patient1/patient1_images3.nii.gz",
+                "./examples/patient1/patient1_images4.nii.gz",
+                "./examples/patient1/patient1_images0.nii.gz"
+            ]
+        ],
+        "modality": 
+        [
+            [
+                "ax t1",
+                "ax t1c+",
+                "ax t2",
+                "ax t2f",
+                "cor t1c+"
+            ],
+            [
+                "ax t1",
+                "ax t1c+",
+                "ax t2",
+                "ax t2f",
+                "sag t1c+"
+            ]
+        ],
+        "tumor": "schwannoma",
+        "Overall_class": "Cranial and paraspinal nerve tumour",
+        "Overall_special_token": "<class_8>",
+        "Age": "60",
+        "Sex": "Male"
+    }
+}

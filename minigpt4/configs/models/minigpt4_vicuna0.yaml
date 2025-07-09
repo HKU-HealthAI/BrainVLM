@@ -1,0 +1,32 @@
+model:
+  arch: minigpt4
+  
+  model_2d_or_3d: "2d"
+  # vit encoder
+  image_size: 224
+  drop_path_rate: 0
+  use_grad_checkpoint: False
+  vit_precision: "fp16"
+  freeze_vit: True
+  freeze_qformer: True
+  self_training: False
+  # Q-Former
+  num_query_token: 32
+  # generation configs
+  prompt: ""
+
+  llama_model: "/disk1/Data/Medical-Ours/Brain_Tumor_data/ckpt/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659"
+
+preprocess:
+    vis_processor:
+        train:
+          name: "blip2_image_train"
+          image_size: 224
+        eval:
+          name: "blip2_image_eval"
+          image_size: 224
+    text_processor:
+        train:
+          name: "blip_caption"
+        eval:
+          name: "blip_caption"

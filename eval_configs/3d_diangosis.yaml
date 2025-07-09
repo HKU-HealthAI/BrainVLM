@@ -1,0 +1,69 @@
+model:
+  arch: minigpt4
+  model_type: pretrain_vicuna0
+  max_txt_len: 480
+  end_sym: "###"
+  low_resource: True
+  prompt_template: '###Human: {} ###Assistant: '
+  # ckpt: '/home/haoran/yinong/mnigpt-4/MiniGPT-4/minigpt4/output/minigpt4_stage2_finetune/20240821221/checkpoint_5.pth'
+  # ckpt: '/home/haoran/Yanzhaoshi/MiniGPT-4/minigpt4/output/minigpt4_stage2_finetune/20240827093/checkpoint_5.pth'
+  # ckpt: '/home/haoran/Yanzhaoshi/MiniGPT-4/minigpt4/output/minigpt4_stage2_finetune/20240827093/checkpoint_8.pth'
+  # ckpt: /home/ynwang/MiniGPT-4/minigpt4/ckpt/lora_128/checkpoint_7.pth
+  ckpt: "/disk1/Data/Medical-Ours/Brain_Tumor_data/ckpt/brain_llm/output/minigpt4_stage2_finetune/20250521154/checkpoint_5.pth"
+
+
+datasets:
+  # tcia_classification:
+  #   batch_size: 1
+  #   vis_processor:
+  #     train:
+  #       name: "blip2_image_train"
+  #       image_size: 224
+  #   text_processor:
+  #     train:
+  #       name: "blip_caption"
+  #   sample_ratio: 100
+  #   collater: lambda x:x
+
+  #   anns_path: "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat/json_files/integrate/xiangya_test_stage1.json"
+
+#xiangya_test_stage1.json
+    # anns_path: "/home/haoran/yinong/Data/Data1/Brain_Tumor_data/BraTS23/new_train_summary_brats23.json"
+
+    # anns_path: "/home/haoran/yinong/brats23/Data1/Brain_Tumor_data/BraTS23/AOMIC-ID_configs/train_summary_brats23.json"
+  normal_tumor_classification:
+    batch_size: 1
+    vis_processor:
+      train:
+        name: "blip2_image_train"
+        image_size: 224
+    text_processor:
+      train:
+        name: "blip_caption"
+    sample_ratio: 30
+    collater: lambda x:x
+    # anns_path: "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat/patient_json_files/integrate/xiangya_train.json"
+    # anns_path: "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat/patient_json_files/integrate/xiangya_train.json"
+    image_encoder: '2d'
+    anns_path: [
+    "/disk1/Data/Medical-Ours/Brain_Tumor_data/Data/Data1/Brain_Tumor_data/normal_tumor_classification/patient_dict_resample_normal_tumor_test.json",
+    ]
+    # "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat_test/json_files/integrate/final_training.json"
+
+    # anns_path: "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat/json_files/report_files/patient_report_files/xiangya_report_test.json"
+    # anns_path: "/mnt/7T/yinong/Brain_Tumor_data/Brain_Tumor_reformat/json_files/integrate/new_xiangya_test.json"
+
+
+    # anns_path: "/home/haoran/yinong/Data/Data1/Brain_Tumor_data/xiangya/test_dataset/new_final_28.json"
+
+  # radiopedia_report:
+  #   batch_size: 1
+  #   vis_processor:
+  #     train:
+  #       name: "blip2_image_train"
+  #       image_size: 224
+  #   text_processor:
+  #     train:
+  #       name: "blip_caption"
+run:
+  task: image_text_pretrain
