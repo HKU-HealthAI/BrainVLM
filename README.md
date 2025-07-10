@@ -5,9 +5,17 @@ Yinong Wang †, Jianwen Chen †, Zhou Chen †, Shuwen Kuang †, Haoning Jian
 
 *Corresponding authors.
 
-BrainVLM is a foundation model designed for comprehensive brain tumor analysis. It leverages multi-parametric MRI scans (T1, T1c, T2, and FLAIR sequences) and _optional_ patient metadata as input, and provides diagnosis (among 12 brain tumor categories of WHO-CNS5) and radiology report for patient.
+BrainVLM represents a breakthrough in neuro-oncology, a powerful foundation model designed for in-depth brain tumor analysis. It intelligently processes multi-parametric MRI scans (including T1, T1c, T2, and FLAIR sequences) alongside optional patient metadata to deliver:
 
-🔥🔥🔥 We have released our evaluation code and checkpoints for brain tumor diagnosis and radiology report generation. Welcome everyone to try it now!
+#### Tumor Diagnosis:
+
+Accurate diagnosis across 12 brain tumor categories according to WHO-CNS5.
+
+#### Automated Reporting: 
+
+Automatic generation of descriptive radiology reports.
+
+🔥🔥🔥 We are excited to share our evaluation code and pre-trained checkpoints for brain tumor diagnosis and radiology report generation. Explore BrainVLM’s capabilities now!
 
 ## Table of Contents
 [Installation](#Installation)
@@ -21,8 +29,9 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 [Example Output](#Example_Output)
 
 ## Environment Installation 
-Linux Ubuntu 22.04.5
-1. Clone this repository and navigate to the brainvlm folder
+We recommend installing and running this project on Ubuntu 22.04.5.
+
+Clone this repository and navigate to the project folder:
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
