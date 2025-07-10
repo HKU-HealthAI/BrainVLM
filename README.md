@@ -26,7 +26,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 - Brainvlm will automatically load this ckpt, do not need to indicate the path of BiomedCLIP in our code.
 
 3. Download BrainVLM ckpts
-- Diagnosis and report ckpt:  https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto
+- Diagnosis and report ckpt:  [https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
 
 ### Prepare test json files:
 
@@ -130,7 +130,7 @@ python eval.py --test_json_path --model_ckpt_path
 ```
 For evaluation, replace "test_json_path" with the path to the test JSON file and "model_ckpt_path" with the path to BrainVLM's checkpoint.
 
-For example, you can download the BrainVLM checkpoint(https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto
+For example, you can download the BrainVLM checkpoint([https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
 ) to ./ckpts, named checkpoint_1.pth, and then execute the following command:
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
