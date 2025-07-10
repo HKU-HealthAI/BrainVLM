@@ -8,11 +8,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 parser = argparse.ArgumentParser(description='BrainVLM Evaluation')
-parser.add_argument('--json_file', type=str, required=True, help='Path to the test json file')
-parser.add_argument('--model_ckpt', type=str, required=True, help='Path to the model checkpoint')
+parser.add_argument('--test_json_path', type=str, required=True, help='Path to the test json file')
+parser.add_argument('--model_ckpt_path ', type=str, required=True, help='Path to the model checkpoint')
 args = parser.parse_args()
-json_file = args.json_file
-model_ckpt = args.model_ckpt
+json_file = args.test_json_path
+model_ckpt = args.model_ckpt_path 
 
 
 import random
