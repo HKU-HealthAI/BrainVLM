@@ -12,7 +12,7 @@ Upon acceptance of the paper, we will release all models' weights and relevant s
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
-conda env create -f brainvlm_foundation.yml
+conda env create -f environment.yml
 ~~~~
 
 ### Prepare model weights
