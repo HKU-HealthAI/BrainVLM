@@ -30,7 +30,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 
 ### Prepare test json files:
 
-Prepare a json file same with example_test.json. BrainVLM supports nii.gz and npy files as input.
+We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
 #### Patient Example in example_test.json:
 For patient1, it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
 ```
@@ -51,7 +51,7 @@ BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or anot
 During inference, BrainVLM will origanized a serise of MRI combination for diagnosis, the final diagnosis is defined by the most frequent prediction in these combinations.
 
 To fulfill the inference process, we need generate a test json same with example_test.json.
-For patient1, it have 3 parts: 1) image_list; 2) modality_list; 3) patient metadata.
+For patient1, it have 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### image_list
 The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations are defined, each containing the file paths of five .nii.gz files.
 #### modality_list
@@ -89,6 +89,40 @@ The modality_list records the modalities for each combination, with each entry s
          ├── Age
          └── Gender
 ```
+
+For a patient with incomplete data, such as patient2, only the following MRI sequences are available: axial T1, T1c+, and T2, along with coronal T1c+ and sagittal T1c+. The axial FLAIR (T2f) sequence is missing. Additionally, patient2 lacks gender and age information.
+```
+This is original paitent MRI sequences
+/examples
+   └──/patient2
+      ├──patient2_sag t1c+.nii.gz
+      ├──patient2_cor t1c+.nii.gz
+      ├──patient2_ax t1.nii.gz
+      ├──patient2_ax t2.nii.gz
+      └──patient2_ax t1c+.nii.gz  
+```
+
+
+For testing patient2, we can create a combination by keeping the other modalities fixed and substituting coronal T1c+ for the missing axial FLAIR. The resulting json data is shown below:
+```
+/patient2
+   └── /image_list
+       └── /combination_1
+           ├── patient2_ax t1.nii.gz
+           ├── patient2_ax t1c+.nii.gz
+           ├── patient2_ax t2.nii.gz
+           ├── patient2_cor t1c+.nii.gz
+           └── patient2_sag t1c+.nii.gz
+   └──/modality_list
+         └── /combination_1
+            ├── ax t1
+            ├── ax t1c+
+            ├── ax t2
+            ├── cor t1c+
+            └── sag t1c+
+
+```
+
 ### Evaluation
 
 ```
@@ -98,7 +132,24 @@ For evaluation, replace "test_json_path" with the path to the test JSON file and
 
 For example, you can download the BrainVLM checkpoint to ./ckpts, named checkpoint_1.pth, and then execute the following command:
 ```
-python eval.py --example_test.json --./ckpts/checkpoint_1.pth
+python eval.py example_test.json ./ckpts/checkpoint_1.pth
+```
+### example output
+#### For patient 1:
+```
+combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'cor t1c+']
+
+combination_0: In Right cerebellum, there is a mass lesion with hypointense in T1, hyperintense in T2. After contrast administration, there is a heterogeneous enhancement. Compression of the fourth ventricle is observed. No midline structure shift. This patient was diagnosed with cranial and paraspinal nerve tumour. 
+```
+
+```
+combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'sag t1c+']
+
+combination_1: In Right cerebellum, there is a mass lesion with hypointense in T1, hyperintense in T2, hyperintense in FLAIR. There is a hypointense T1 signal, hyperintense T2 signal, hyperintense FLAIR signal in Supratentorial white matter. After contrast administration, there is a marked heterogeneous enhancement. Compression of the fourth ventricle is observed. No midline structure shift. This patient was diagnosed with cranial and paraspinal nerve tumour. 
+```
+
+```
+Final diagnosis:  This patient was diagnosed with cranial and paraspinal nerve tumour
 ```
 
 ### References

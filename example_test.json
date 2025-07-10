@@ -35,8 +35,34 @@
         ],
         "tumor": "schwannoma",
         "Overall_class": "Cranial and paraspinal nerve tumour",
-        "Overall_special_token": "<class_8>",
         "Age": "60",
         "Sex": "Male"
+    },
+    "patient2": {
+        "image_list": [ 
+            [
+                "./examples/patient2/patient2_ax t1.nii.gz",
+                "./examples/patient2/patient2_ax t1c+.nii.gz",
+                "./examples/patient2/patient2_ax t2.nii.gz",
+                "./examples/patient2/patient2_cor t1c+.nii.gz",
+                "./examples/patient2/patient2_sag t1c+.nii.gz"
+            ]
+        ],
+        "modality": 
+        [
+            [
+                "ax t1",
+                "ax t1c+",
+                "ax t2",
+                "cor t1c+",
+                "sag t1c+"
+            ]
+        ],
+        "tumor": "Glioblastoma",
+        "Overall_class": "Glioma"
+
     }
+         
+                
+    
 }

@@ -4,6 +4,8 @@ import json
 import argparse
 from scipy.ndimage import zoom
 import nibabel as nib
+import warnings
+warnings.filterwarnings('ignore')
 
 parser = argparse.ArgumentParser(description='BrainVLM Evaluation')
 parser.add_argument('--json_file', type=str, required=True, help='Path to the test json file')
@@ -312,7 +314,6 @@ def images_process(images,image_dict,modalities=None):#get_item
             age_background='There are several MRI sequence from one patient, '
     else:
         age_background=age_info_extraction(image_dict)
-    print(modalities)
 
     is_split_volume_in_instruction = 2  # 0 
     if is_split_volume_in_instruction == 0:
@@ -347,7 +348,6 @@ def images_process(images,image_dict,modalities=None):#get_item
 
 
 cfg.model_cfg.ckpt=model_ckpt
-print(cfg.model_cfg.ckpt)
 model = task.build_model(cfg).to(device)
 model.eval()
 
@@ -357,14 +357,20 @@ step3_list=[]
 
 image_encoder='2d'
 
-# breakpoint()
 for k,v in data.items():
     image_list=v['image_list']
     modality_list=v['modality']
-    for image_combination,modality_combination in zip(image_list,modality_list):
+    combination_diagnosis=[]
+    for comb_idx, (image_combination,modality_combination) in enumerate(zip(image_list,modality_list)):
         instruction,image_list,HR_image_list=images_process(image_combination,v,modality_combination)        
         answer=model.generate_step(image_list,instruction,HR_image_list)        
-        print(answer)
-        
+        print(f'combination modality: {modality_combination}')
+        print(f'combination_{comb_idx}: {answer}')
+        combination_diagnosis.append(answer.split('.')[-2])
+    # Find the most common diagnosis from all combinations
+    if len(combination_diagnosis) > 0:
+        from collections import Counter
+        most_common_diagnosis = Counter(combination_diagnosis).most_common(1)[0][0]
+        print(f"Final diagnosis: {most_common_diagnosis}")
         
         
