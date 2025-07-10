@@ -95,7 +95,7 @@ The modality_list records the modalities for each combination, with each entry s
             ├── ax t1c+
             ├── ax t2
             ├── ax t2f
-            └── cor t1c+
+            └── sag t1c+
    └──patient meta data
          ├── Age
          └── Gender
