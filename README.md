@@ -15,8 +15,8 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 [Example Output](#Example_Output)
 
 ## Environment Installation 
-Linux Ubuntu 22.04.5
-1. Clone this repository and navigate to the brainvlm folder
+Suggested System: Linux Ubuntu 22.04.5
+Clone this repository and navigate to the brainvlm folder
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
