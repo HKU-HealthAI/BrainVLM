@@ -27,7 +27,7 @@ conda env create -f brainvlm_foundation.yml
 
 | Model                  | Description                          | Download Link                                      | Load Instructions                              |
 |------------------------|--------------------------------------|----------------------------------------------------|------------------------------------------------|
-| Llama3.1-8B Instruct   | Backbone model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
+| Llama3.1-8B Instruct   | Language Backbone | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
 | BiomedCLIP             | Vision Encoder | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
 | BrainVLM (Diagnosis and Report) | Checkpoints for report and diagnosis | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) | See section [Evaluation](#Evaluation)                                       |
 
@@ -134,7 +134,7 @@ For testing patient2, we can create a combination by keeping the other modalitie
 
 ```
 
-## Evaluation
+## Model Evaluation
 
 The [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command.
 
