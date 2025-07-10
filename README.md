@@ -1,9 +1,9 @@
 ## A Foundation Model for Presurgical Brain Tumor Diagnosis and MRI Interpretation
 BrainVLM is a foundation model designed for comprehensive brain tumor analysis. It leverages multi-parametric MRI scans (T1, T1c, T2, and FLAIR sequences) and _optional_ patient metadata as input, and provides diagnosis (among 12 brain tumor categories of WHO-CNS5) and radiology report for patient.
 
-Currently, only the evaluation code and checkpoints for brain tumor diagnosis and radiology report are available. 
+🔥🔥🔥 We have released our evaluation code and checkpoints for brain tumor diagnosis and radiology report generation. Welcome everyone to try it now!
 
-### Directory
+## Table of Contents
 [Installation](#Installation)
 
 [Prepare model weights](#Prepare_model_weights)
@@ -12,7 +12,7 @@ Currently, only the evaluation code and checkpoints for brain tumor diagnosis an
 
 [Example Output](#Example_Output)
 
-### Installation (Linux)
+## Installation (Linux)
 1. Clone this repository and navigate to the brainvlm folder
 
 ~~~~
@@ -21,7 +21,7 @@ cd BrainVLM
 conda env create -f brainvlm_foundation.yml
 ~~~~
 
-### Prepare model weights
+## Prepare model weights
 1. Downloading Llama3.1-8B Instruct
 - [Download] https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
 - load Llama3.1-8B-Instruct in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: "
@@ -34,7 +34,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 3. Download BrainVLM ckpts
 - Diagnosis and report ckpt:  [https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
 
-### Prepare test data files:
+## Prepare test data files:
 
 We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
 #### Patient Example in example_test.json:
@@ -144,7 +144,7 @@ For example, you can download the BrainVLM checkpoint([https://drive.google.com/
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
 ```
-### Example Output
+## Example Output
 #### For patient 1:
 ```
 combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'cor t1c+']
@@ -163,7 +163,7 @@ Final diagnosis:  This patient was diagnosed with cranial and paraspinal nerve t
 ```
 
 
-### Acknowledgement
+## Acknowledgement
 Upon acceptance of the paper, we will release all models' weights and relevant source code for pretraining, fine-tuning, and uncertainty qualification for formal testing to facilitate research transparency and community collaboration.
 
 Our code builds upon MiniGPT-4 and utilizes checkpoints based on LLaMA 3.1 and BiomedCLIP. We would like to thank them.
