@@ -130,7 +130,8 @@ python eval.py --test_json_path --model_ckpt_path
 ```
 For evaluation, replace "test_json_path" with the path to the test JSON file and "model_ckpt_path" with the path to BrainVLM's checkpoint.
 
-For example, you can download the BrainVLM checkpoint to ./ckpts, named checkpoint_1.pth, and then execute the following command:
+For example, you can download the BrainVLM checkpoint(https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto
+) to ./ckpts, named checkpoint_1.pth, and then execute the following command:
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
 ```
