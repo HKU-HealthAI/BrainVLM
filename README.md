@@ -14,9 +14,9 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 
 [Example Output](#Example_Output)
 
-## Environment Installation (Linux Ubuntu 22.04.5)
+## Environment Installation 
+Linux Ubuntu 22.04.5
 1. Clone this repository and navigate to the brainvlm folder
-
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
@@ -33,7 +33,8 @@ conda env create -f brainvlm_foundation.yml
 
 ## Prepare test data files:
 
-We provide a json file for test: [example_test.json](./example_test.json) (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
+We provide a sample JSON file for testing: [example_test.json](./example_test.json), which includes data for two patients (patient1 and patient2). BrainVLM supports .nii.gz and .npy file formats as input.
+
 ### 1. Test data example:
 For [patient1](examples/patient1/), it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
 ```
@@ -51,15 +52,15 @@ BrainVLM requires three inputs: 1) a list of 5 MRI sequences, 2) MRI modality in
 
 During inference, BrainVLM organizes MRI combinations based on a construction rule, with the final diagnosis determined by the most frequent prediction. 
 
-To run inference, a test JSON file in the same format as example_test.json is required.
+To run inference, a test JSON file in the same format as [example_test.json](./example_test.json) is required.
 
 ### 2. Origanizing test json file.
 For patient1, it has 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### 1) image_list
-The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations have been established according to the combination construction rule, each including the file paths of five .nii.gz files. 
-#### 2) modality_list
-The modality_list records the modalities for each combination, with each entry specifying the modality names corresponding to the file paths in the respective image_list combination.
+The image_list defines combinations of MRI sequences for inference. For patient1, available modalities include axial T1, T2, FLAIR, and T1c+, plus coronal and sagittal T1c+. Two combinations are created based on the construction rule, each containing paths to five .nii.gz files.
 
+#### 2) modality_list
+The modality_list specifies the modality names corresponding to each file path in the image_list combinations.
 
 ```
 /patient1
@@ -134,14 +135,14 @@ For testing patient2, we can create a combination by keeping the other modalitie
 The [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command.
 
 ```
-python eval.py --test_json_path --model_ckpt_path
+python eval.py --test_json_path <path_to_json> --model_ckpt_path <path_to_checkpoint>
 ```
-For evaluation, replace "test_json_path" with the path to the test JSON file and "model_ckpt_path" with the path to BrainVLM's checkpoint.
+Replace <path_to_json> with the path to your test JSON file and <path_to_checkpoint> with the BrainVLM checkpoint path. For example, if the BrainVLM checkpoint is downloaded to ./ckpts/checkpoint_1.pth, run:
 
-For example, you can download the BrainVLM checkpoint to ./ckpts, named checkpoint_1.pth, and then execute the following command:
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
 ```
+
 ## Example Output
 #### For patient 1:
 ```
