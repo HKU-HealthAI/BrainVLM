@@ -39,7 +39,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 ## Prepare test data files:
 
 We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
-#### Patient Example in example_test.json:
+### 1. Patient Example in example_test.json:
 For patient1, it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
 ```
 This is original paitent MRI sequences
@@ -60,6 +60,7 @@ During inference, BrainVLM will origanize a serise of MRI combination for diagno
 
 To perform the inference process, we need to generate a test JSON file with the same format as example_test.json.
 
+### 2. Origanizing test json file for patient 1.
 For patient1, it has 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### 1) image_list
 The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations have been established according to the combination construction rule, each including the file paths of five .nii.gz files. 
@@ -99,6 +100,8 @@ The modality_list records the modalities for each combination, with each entry s
          ├── Age
          └── Gender
 ```
+
+### 3. Testing for patient with incomplete data.
 For custom data testing, you need organize the test combinations same with patient1. 
 
 For a patient with incomplete data, such as patient2, only the following MRI sequences are available: axial T1, T1c+, and T2, along with coronal T1c+ and sagittal T1c+. The axial FLAIR (T2f) sequence is missing. Additionally, patient2 lacks gender and age information.
