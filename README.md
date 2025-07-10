@@ -54,14 +54,14 @@ BrainVLM need 3 parts of input: 1) MRI sequence list (5 MRI sequences); 2) MRI m
 
 BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or another view), T1c from the same view as T1, T2 (axial or another view), FLAIR (axial or another view), and an additional T1c from a different view than T1.
 
-During inference, BrainVLM will origanize a serise of MRI combination for diagnosis, the final diagnosis is defined by the most frequent prediction in these combinations.
+During inference, BrainVLM will origanize a serise of MRI combination for diagnosis according to the combination construction rule, the final diagnosis is defined by the most frequent prediction in these combinations.
 
 To perform the inference process, we need to generate a test JSON file with the same format as example_test.json.
 
-For patient1, it have 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
-#### image_list
-The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations are defined, each containing the file paths of five .nii.gz files. 
-#### modality_list
+For patient1, it has 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
+#### 1) image_list
+The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations have been established according to the combination construction rule, each including the file paths of five .nii.gz files. 
+#### 2) modality_list
 The modality_list records the modalities for each combination, with each entry specifying the modality names corresponding to the file paths in the respective image_list combination.
 
 
