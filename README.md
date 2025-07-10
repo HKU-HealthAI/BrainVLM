@@ -3,8 +3,14 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 
 Currently, only the evaluation code and checkpoints for brain tumor diagnosis and radiology report are available. 
 
-Upon acceptance of the paper, we will release all models' weights and relevant source code for pretraining, fine-tuning, and uncertainty qualification for formal testing to facilitate research transparency and community collaboration.
+### Directory
+[Installation](#Installation)
 
+[Prepare model weights](#Prepare_model_weights)
+
+[Evaluation](#Evaluation)
+
+[Example Output](#Example_Output)
 
 ### Installation (Linux)
 1. Clone this repository and navigate to the brainvlm folder
@@ -28,7 +34,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 3. Download BrainVLM ckpts
 - Diagnosis and report ckpt:  [https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
 
-### Prepare test json files:
+### Prepare test data files:
 
 We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
 #### Patient Example in example_test.json:
@@ -48,14 +54,16 @@ BrainVLM need 3 parts of input: 1) MRI sequence list (5 MRI sequences); 2) MRI m
 
 BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or another view), T1c from the same view as T1, T2 (axial or another view), FLAIR (axial or another view), and an additional T1c from a different view than T1.
 
-During inference, BrainVLM will origanized a serise of MRI combination for diagnosis, the final diagnosis is defined by the most frequent prediction in these combinations.
+During inference, BrainVLM will origanize a serise of MRI combination for diagnosis, the final diagnosis is defined by the most frequent prediction in these combinations.
 
-To fulfill the inference process, we need generate a test json same with example_test.json.
+To perform the inference process, we need to generate a test JSON file with the same format as example_test.json.
+
 For patient1, it have 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### image_list
-The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations are defined, each containing the file paths of five .nii.gz files.
+The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations are defined, each containing the file paths of five .nii.gz files. 
 #### modality_list
 The modality_list records the modalities for each combination, with each entry specifying the modality names corresponding to the file paths in the respective image_list combination.
+
 
 ```
 /patient1
@@ -89,6 +97,7 @@ The modality_list records the modalities for each combination, with each entry s
          ├── Age
          └── Gender
 ```
+For custom data testing, you need organize the test combinations same with patient1. 
 
 For a patient with incomplete data, such as patient2, only the following MRI sequences are available: axial T1, T1c+, and T2, along with coronal T1c+ and sagittal T1c+. The axial FLAIR (T2f) sequence is missing. Additionally, patient2 lacks gender and age information.
 ```
@@ -135,7 +144,7 @@ For example, you can download the BrainVLM checkpoint([https://drive.google.com/
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
 ```
-### example output
+### Example Output
 #### For patient 1:
 ```
 combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'cor t1c+']
@@ -153,5 +162,8 @@ combination_1: In Right cerebellum, there is a mass lesion with hypointense in T
 Final diagnosis:  This patient was diagnosed with cranial and paraspinal nerve tumour
 ```
 
-### References
+
+### Acknowledgement
+Upon acceptance of the paper, we will release all models' weights and relevant source code for pretraining, fine-tuning, and uncertainty qualification for formal testing to facilitate research transparency and community collaboration.
+
 Our code builds upon MiniGPT-4 and utilizes checkpoints based on LLaMA 3.1 and BiomedCLIP. We would like to thank them.
