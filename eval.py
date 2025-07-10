@@ -33,21 +33,11 @@ import torch.nn.functional as F
 from minigpt4.common.config import Config
 
 def interpolate_images(images, target_count=32):
-    """
-    使用重采样将图像数组调整为固定数量的图像。
 
-    参数:
-    - images: numpy数组，形状为 (num_images, height, width, channels)。
-    - target_count: 目标图像数量。
-
-    返回:
-    - resampled_images: numpy数组，形状为 (target_count, height, width, channels)。
-    """
     
     num_images = images.shape[0]
     zoom_factor = target_count / num_images
 
-    # 对时间轴 (axis=0) 进行缩放 (仅对第一维进行缩放)
     resampled_images = zoom(images, (zoom_factor, 1, 1), order=1)
 
     return resampled_images
