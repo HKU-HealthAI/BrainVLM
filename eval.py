@@ -83,7 +83,6 @@ def process_modality_name(modality_list):
 
 class Args:
     def __init__(self):
-        # /home/haoran/Yanzhaoshi/MiniGPT-4
         self.cfg_path = "eval_configs/3d_diangosis.yaml"
         self.options = None
 
@@ -235,7 +234,7 @@ def images_process(images,image_dict,modalities=None):#get_item
 
         for image in image_array:  
             if image_encoder=='2d':
-                image = Image.fromarray(image).convert('L')  # image 变成了 PIL object
+                image = Image.fromarray(image).convert('L')  
                 image_sequence.append(image)
                 
         if image_encoder=='2d':
@@ -247,17 +246,8 @@ def images_process(images,image_dict,modalities=None):#get_item
             aug_version = 2  # or 2  
 
                 
-            aug_probability = np.random.rand()  # 随机0-1之间的小数
-            if False:  # 数据增强
-                if aug_version == 1:
-                    aug_transform = random.sample(self.aug_transform_list,1)[0]
-                    image_sequence = aug_transform(image_sequence).squeeze(0)  # 32, 630, 637
-                    image_sequence = image_sequence.unsqueeze(1)  # 32, 1, 630, 637
-                elif aug_version == 2:
-                    image_sequence = image_sequence.cuda()  #
-                    image_sequence = random_affine_transform(image_sequence)
-                    image_sequence = add_random_noise(image_sequence)
-                    image_sequence = adjust_brightness_contrast(image_sequence).squeeze(1)
+            aug_probability = np.random.rand() 
+            
             image_sequence = image_sequence.squeeze().cuda()  # torch.Size([32, 630, 637])
                         
             image_sequence_LR = our_data_resize(image_sequence)  # [32, 256, 256] -> [32, 224, 224]

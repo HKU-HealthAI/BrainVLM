@@ -2,18 +2,18 @@
     "patient1": {
         "image_list": [ 
             [
-                "./examples/patient1/patient1_images2.nii.gz",
-                "./examples/patient1/patient1_images5.nii.gz",
-                "./examples/patient1/patient1_images3.nii.gz",
-                "./examples/patient1/patient1_images4.nii.gz",
-                "./examples/patient1/patient1_images1.nii.gz"
+                "./examples/patient1/patient1_ax t1.nii.gz",
+                "./examples/patient1/patient1_ax t1c+.nii.gz",
+                "./examples/patient1/patient1_ax t2.nii.gz",
+                "./examples/patient1/patient1_ax t2f.nii.gz",
+                "./examples/patient1/patient1_cor t1c+.nii.gz"
             ],
             [
-                "./examples/patient1/patient1_images2.nii.gz",
-                "./examples/patient1/patient1_images5.nii.gz",
-                "./examples/patient1/patient1_images3.nii.gz",
-                "./examples/patient1/patient1_images4.nii.gz",
-                "./examples/patient1/patient1_images0.nii.gz"
+                "./examples/patient1/patient1_ax t1.nii.gz",
+                "./examples/patient1/patient1_cor t1c+.nii.gz",
+                "./examples/patient1/patient1_ax t2.nii.gz",
+                "./examples/patient1/patient1_ax t2f.nii.gz",
+                "./examples/patient1/patient1_sag t1c+.nii.gz"
             ]
         ],
         "modality": 
