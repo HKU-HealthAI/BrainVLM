@@ -14,13 +14,13 @@ BrainVLM represents a breakthrough in neuro-oncology, a powerful foundation mode
 🔥🔥🔥 We are excited to share our evaluation code and pre-trained checkpoints for brain tumor diagnosis and radiology report generation. Explore BrainVLM’s capabilities now!
 
 ## Table of Contents
-[Installation](#Installation)
+[Environment Installation](#Environment_Installation)
 
 [Prepare model weights](#Prepare_model_weights)
 
-[Prepare test data](#Prepare_test_data)
+[Prepare test data_files](#Prepare_test_data_files)
 
-[Evaluation](#Evaluation)
+[Model Evaluation](#Model_Evaluation)
 
 [Example Output](#Example_Output)
 
