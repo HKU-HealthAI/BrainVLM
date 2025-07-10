@@ -8,6 +8,8 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 
 [Prepare model weights](#Prepare_model_weights)
 
+[Prepare test data](#Prepare_test_data)
+
 [Evaluation](#Evaluation)
 
 [Example Output](#Example_Output)
@@ -132,7 +134,7 @@ For testing patient2, we can create a combination by keeping the other modalitie
 
 ```
 
-### Evaluation
+## Evaluation
 
 ```
 python eval.py --test_json_path --model_ckpt_path
