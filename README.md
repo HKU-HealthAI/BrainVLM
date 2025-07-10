@@ -127,8 +127,9 @@ This is original paitent MRI sequences
       └──patient2_ax t1c+.nii.gz  
 ```
 
+When the axial FLAIR sequence is unavailable (as with patient2), you can create valid combinations by: (1) Keeping the core sequences intact (axial T1, T1c+, and T2); (2) Substituting alternative views (using coronal and sagittal T1c+).
 
-For testing patient2, we can create a combination by keeping the other modalities fixed and substituting coronal T1c+ for the missing axial FLAIR. The resulting json data is shown below:
+The resulting json data is shown below:
 ```
 /patient2
    └── /image_list
