@@ -33,7 +33,7 @@ conda env create -f brainvlm_foundation.yml
 
 ## Prepare test data files:
 
-We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
+We provide a json file for test: [example_test.json](./example_test.json) (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
 ### 1. Test data example:
 For [patient1](examples/patient1/), it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
 ```
@@ -93,11 +93,10 @@ The modality_list records the modalities for each combination, with each entry s
          ├── Age
          └── Gender
 ```
-
-### 3. Testing for patient with incomplete data.
 For custom data testing, you need organize the test combinations same with patient1. 
 
-For a patient with incomplete data, such as patient2, only the following MRI sequences are available: axial T1, T1c+, and T2, along with coronal T1c+ and sagittal T1c+. The axial FLAIR (T2f) sequence is missing. Additionally, patient2 lacks gender and age information.
+### 3. Testing for patient with incomplete data.
+For a patient with incomplete data, such as [patient2](./examples/patient2/), only the following MRI sequences are available: axial T1, T1c+, and T2, along with coronal T1c+ and sagittal T1c+. The axial FLAIR (T2f) sequence is missing. Additionally, patient2 lacks gender and age information.
 ```
 This is original paitent MRI sequences
 /examples
