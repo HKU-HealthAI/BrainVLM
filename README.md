@@ -26,7 +26,7 @@ https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
 - Brainvlm will automatically load this ckpt
 
 3. Download BrainVLM ckpts
-- Diagnosis and report ckpt: https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto
+- Diagnosis and report ckpt: [https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
 
 - load our ckpt in eval.py
 
