@@ -159,7 +159,7 @@ python eval.py --test_json_path <path_to_json> --model_ckpt_path <path_to_checkp
 Replace <path_to_json> with the path to your test JSON file and <path_to_checkpoint> with the BrainVLM checkpoint path. For example, if the BrainVLM checkpoint is downloaded to ./ckpts/checkpoint_1.pth, run:
 
 ```
-python eval.py --test_json_path==example_test.json  --model_ckpt_path==./ckpts/checkpoint_1.pth
+python eval.py --test_json_path=example_test.json  --model_ckpt_path=./ckpts/checkpoint_1.pth
 ```
 
 ## Example Output
