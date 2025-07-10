@@ -14,7 +14,7 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 
 [Example Output](#Example_Output)
 
-## Installation (Linux)
+## Environment Installation (Linux Ubuntu 22.04.5)
 1. Clone this repository and navigate to the brainvlm folder
 
 ~~~~
@@ -25,21 +25,17 @@ conda env create -f brainvlm_foundation.yml
 
 ## Prepare model weights
 
-# Model Downloads
-
-| Model                  | Download Link                                      | Load Instructions                              |
-|------------------------|----------------------------------------------------|------------------------------------------------|
-| Llama3.1-8B Instruct   | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
-| BiomedCLIP             | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
-| BrainVLM (Diagnosis and Report) | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) |  See section [Evaluation](#Evaluation)                                       |
-
-
+| Model                  | Description                          | Download Link                                      | Load Instructions                              |
+|------------------------|--------------------------------------|----------------------------------------------------|------------------------------------------------|
+| Llama3.1-8B Instruct   | Backbone model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
+| BiomedCLIP             | Vision Encoder | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
+| BrainVLM (Diagnosis and Report) | Checkpoints for report and diagnosis | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) | See section [Evaluation](#Evaluation)                                       |
 
 ## Prepare test data files:
 
 We provide a json file for test: example_test.json (includes 2 patients, patient1 and patient2). BrainVLM supports nii.gz and npy files as input.
-### 1. Patient Example in example_test.json:
-For patient1, it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
+### 1. Test data example:
+For [patient1](examples/patient1/), it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
 ```
 This is original paitent MRI sequences
 /examples
@@ -51,15 +47,13 @@ This is original paitent MRI sequences
       ├──patient1_ax t2f.nii.gz
       └──patient1_ax t1c+.nii.gz  
 ```
-BrainVLM need 3 parts of input: 1) MRI sequence list (5 MRI sequences); 2) MRI modality information; 3) paitent meta data (Age and gender). 
+BrainVLM requires three inputs: 1) a list of 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
 
-BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or another view), T1c from the same view as T1, T2 (axial or another view), FLAIR (axial or another view), and an additional T1c from a different view than T1.
+During inference, BrainVLM organizes MRI combinations based on a construction rule, with the final diagnosis determined by the most frequent prediction. 
 
-During inference, BrainVLM will origanize a serise of MRI combination for diagnosis according to the combination construction rule, the final diagnosis is defined by the most frequent prediction in these combinations.
+To run inference, a test JSON file in the same format as example_test.json is required.
 
-To perform the inference process, we need to generate a test JSON file with the same format as example_test.json.
-
-### 2. Origanizing test json file for patient 1.
+### 2. Origanizing test json file.
 For patient1, it has 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### 1) image_list
 The image_list stores combinations of MRI sequences for inference. For patient1, the available modalities are axial T1, T2, FLAIR, and T1c+, along with coronal T1c+ and sagittal T1c+. Two test combinations have been established according to the combination construction rule, each including the file paths of five .nii.gz files. 
@@ -138,13 +132,14 @@ For testing patient2, we can create a combination by keeping the other modalitie
 
 ## Evaluation
 
+The [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command.
+
 ```
 python eval.py --test_json_path --model_ckpt_path
 ```
 For evaluation, replace "test_json_path" with the path to the test JSON file and "model_ckpt_path" with the path to BrainVLM's checkpoint.
 
-For example, you can download the BrainVLM checkpoint([https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
-) to ./ckpts, named checkpoint_1.pth, and then execute the following command:
+For example, you can download the BrainVLM checkpoint to ./ckpts, named checkpoint_1.pth, and then execute the following command:
 ```
 python eval.py example_test.json ./ckpts/checkpoint_1.pth
 ```
