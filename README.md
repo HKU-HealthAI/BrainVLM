@@ -24,17 +24,16 @@ conda env create -f brainvlm_foundation.yml
 ~~~~
 
 ## Prepare model weights
-1. Downloading Llama3.1-8B Instruct
-- [Download] https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
-- load Llama3.1-8B-Instruct in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: "
 
-2. Download BiomedCLIP
-- [Download]
-https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224
-- Brainvlm will automatically load this ckpt, do not need to indicate the path of BiomedCLIP in our code.
+# Model Downloads
 
-3. Download BrainVLM ckpts
-- Diagnosis and report ckpt:  [https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-hero-goto](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link)
+| Model                  | Download Link                                      | Load Instructions                              |
+|------------------------|----------------------------------------------------|------------------------------------------------|
+| Llama3.1-8B Instruct   | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
+| BiomedCLIP             | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
+| BrainVLM (Diagnosis and Report) | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) |  See section [Evaluation](#Evaluation)                                       |
+
+
 
 ## Prepare test data files:
 
@@ -95,7 +94,7 @@ The modality_list records the modalities for each combination, with each entry s
             ├── ax t1c+
             ├── ax t2
             ├── ax t2f
-            └── sag t1c+
+            └── cor t1c+
    └──patient meta data
          ├── Age
          └── Gender
