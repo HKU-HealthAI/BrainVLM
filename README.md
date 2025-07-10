@@ -1,4 +1,10 @@
 ## A Foundation Model for Presurgical Brain Tumor Diagnosis and MRI Interpretation
+Yinong Wang $\dag$, Jianwen Chen $\dag$, Zhou Chen $\dag$, Shuwen Kuang $\dag$, Haoning Jiang, Yanzhao Shi, Huichun Yuan, Yan-ran (Joyce) Wang, Bing Wang, Lei Wu, Bin Tang, Li Meng, Baihua Luo, Bin Zhou, Wei Ding, Weiming Zhong, Wei Hou, Yuanbing Chen, Zhiping Wan, Wei Wang, Zhenkun Xiao, Wenwu Wan, Allen He, Yuyin Zhou, Longbo Zhang, Feifei Wang, Zhixiong Liu, Michael Iv, Xuan Gong*, Liangqiong Qu*
+
+$\dag$ These authors contributed equally to this work.
+
+*Corresponding authors.
+
 BrainVLM is a foundation model designed for comprehensive brain tumor analysis. It leverages multi-parametric MRI scans (T1, T1c, T2, and FLAIR sequences) and _optional_ patient metadata as input, and provides diagnosis (among 12 brain tumor categories of WHO-CNS5) and radiology report for patient.
 
 🔥🔥🔥 We have released our evaluation code and checkpoints for brain tumor diagnosis and radiology report generation. Welcome everyone to try it now!
@@ -15,8 +21,8 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 [Example Output](#Example_Output)
 
 ## Environment Installation 
-Suggested System: Linux Ubuntu 22.04.5
-Clone this repository and navigate to the brainvlm folder
+Linux Ubuntu 22.04.5
+1. Clone this repository and navigate to the brainvlm folder
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
@@ -24,10 +30,11 @@ conda env create -f brainvlm_foundation.yml
 ~~~~
 
 ## Prepare model weights
+BrainVLM comprises three key components: (1) a vision encoder for extracting image features, (2) a MLP projector that integrates the vision encoder with the LLM, and (3) a LLM backbone based on LLaMA 3.1-8B. To utilize BrainVLM, we need to load the vision encoder, LLM backbone, and fine-tuned BrainVLM checkpoint.
 
 | Model                  | Description                          | Download Link                                      | Load Instructions                              |
 |------------------------|--------------------------------------|----------------------------------------------------|------------------------------------------------|
-| Llama3.1-8B Instruct   | Language Backbone | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
+| Llama3.1-8B Instruct   | Backbone model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
 | BiomedCLIP             | Vision Encoder | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
 | BrainVLM (Diagnosis and Report) | Checkpoints for report and diagnosis | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) | See section [Evaluation](#Evaluation)                                       |
 
@@ -48,7 +55,7 @@ This is original paitent MRI sequences
       ├──patient1_ax t2f.nii.gz
       └──patient1_ax t1c+.nii.gz  
 ```
-__Input requirement:__ BrainVLM requires three inputs: 1) a list of 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
+__Input requirement:__ BrainVLM requires three inputs: 1) a list up to 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
 
 
 __Combination Construction:__ BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or another view), T1c from the same view as T1, T2 (axial or another view), FLAIR (axial or another view), and an additional T1c from a different view than T1.
@@ -134,7 +141,7 @@ For testing patient2, we can create a combination by keeping the other modalitie
 
 ```
 
-## Model Evaluation
+## Evaluation
 
 The [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command.
 
@@ -168,5 +175,7 @@ Final diagnosis:  This patient was diagnosed with cranial and paraspinal nerve t
 
 ## Acknowledgement
 Upon acceptance of the paper, we will release all models' weights and relevant source code for pretraining, fine-tuning, and uncertainty qualification for formal testing to facilitate research transparency and community collaboration.
+
+Besides, we will build a online website for efficientlly and automatically brain tumor diagnosis testing.
 
 Our code builds upon MiniGPT-4 and utilizes checkpoints based on LLaMA 3.1 and BiomedCLIP. We would like to thank them.
