@@ -7,13 +7,9 @@ Yinong Wang †, Jianwen Chen †, Zhou Chen †, Shuwen Kuang †, Haoning Jian
 
 BrainVLM represents a breakthrough in neuro-oncology, a powerful foundation model designed for in-depth brain tumor analysis. It intelligently processes multi-parametric MRI scans (including T1, T1c, T2, and FLAIR sequences) alongside optional patient metadata to deliver:
 
-#### Tumor Diagnosis:
+(1) **Tumor Diagnosis**: Accurate diagnosis across 12 brain tumor categories according to WHO-CNS5.
 
-Accurate diagnosis across 12 brain tumor categories according to WHO-CNS5.
-
-#### Automated Reporting: 
-
-Automatic generation of descriptive radiology reports.
+(2) **Automated Reporting**: Automatic generation of descriptive radiology reports.
 
 🔥🔥🔥 We are excited to share our evaluation code and pre-trained checkpoints for brain tumor diagnosis and radiology report generation. Explore BrainVLM’s capabilities now!
 
