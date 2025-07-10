@@ -16,8 +16,7 @@ BrainVLM is a foundation model designed for comprehensive brain tumor analysis. 
 
 ## Environment Installation 
 Linux Ubuntu 22.04.5
-
-Clone this repository and navigate to the brainvlm folder
+1. Clone this repository and navigate to the brainvlm folder
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
@@ -49,9 +48,13 @@ This is original paitent MRI sequences
       ├──patient1_ax t2f.nii.gz
       └──patient1_ax t1c+.nii.gz  
 ```
-BrainVLM requires three inputs: 1) a list of 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
+__Input requirement:__ BrainVLM requires three inputs: 1) a list of 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
 
-During inference, BrainVLM organizes MRI combinations based on a construction rule, with the final diagnosis determined by the most frequent prediction. 
+
+__Combination Construction:__ BrainVLM utilized five core 3D MRI sequences as visual input—T1 (axial or another view), T1c from the same view as T1, T2 (axial or another view), FLAIR (axial or another view), and an additional T1c from a different view than T1.
+
+
+__Inference:__ During inference, BrainVLM organizes MRI combinations based on the construction rule, with the final diagnosis determined by the most frequent prediction. 
 
 To run inference, a test JSON file in the same format as [example_test.json](./example_test.json) is required.
 
