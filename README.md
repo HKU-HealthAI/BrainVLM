@@ -26,7 +26,7 @@ Linux Ubuntu 22.04.5
 ~~~~
 git clone https://github.com/HKU-HealthAI/BrainVLM.git
 cd BrainVLM
-conda env create -f brainvlm_foundation.yml
+conda env create -f environment.yml
 ~~~~
 
 ## Prepare model weights
