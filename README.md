@@ -39,7 +39,7 @@ BrainVLM comprises three key components: (1) a vision encoder for extracting ima
 
 | Model                  | Description                          | Download Link                                      | Load Instructions                              |
 |------------------------|--------------------------------------|----------------------------------------------------|------------------------------------------------|
-| Llama3.1-8B Instruct   | Backbone model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
+| Llama3.1-8B Instruct   | Backbone language model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
 | BiomedCLIP             | Vision Encoder | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
 | BrainVLM (Diagnosis and Report) | Checkpoints for report and diagnosis | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) | See section [Evaluation](#Evaluation)                                       |
 
@@ -48,7 +48,7 @@ BrainVLM comprises three key components: (1) a vision encoder for extracting ima
 We provide a sample JSON file for testing: [example_test.json](./example_test.json), which includes data for two patients (patient1 and patient2). BrainVLM supports .nii.gz and .npy file formats as input.
 
 ### 1. Test data example:
-For [patient1](examples/patient1/), it includes 6 MRI sequences stored in the directory structure shown below. Each file corresponds to a specific MRI modality.
+For [patient1](examples/patient1/), the following 6 MRI sequences are provided:
 ```
 This is original paitent MRI sequences
 /examples
@@ -60,6 +60,8 @@ This is original paitent MRI sequences
       ├──patient1_ax t2f.nii.gz
       └──patient1_ax t1c+.nii.gz  
 ```
+(Note: The directory structure in the example reflects the original patient MRI sequences.)
+
 __Input requirement:__ BrainVLM requires three inputs: 1) a list up to 5 MRI sequences, 2) MRI modality information, and 3) patient metadata (age and gender). It uses five core 3D MRI sequences as visual input: T1, T1c (same view as T1), T2, FLAIR, and an additional T1c (different view). 
 
 
@@ -146,9 +148,9 @@ For testing patient2, we can create a combination by keeping the other modalitie
 
 ```
 
-## Evaluation
+## Model Evaluation
 
-The [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command.
+Given the generated test JSON file, the [eval.py](./eval.py) is utilized for diagnosis and report generation, supporting brain tumor classification and radiology report generation through this command:
 
 ```
 python eval.py --test_json_path <path_to_json> --model_ckpt_path <path_to_checkpoint>
