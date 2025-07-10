@@ -158,7 +158,7 @@ class BaseModel(nn.Module):
         else:
             llama_model = LlamaForCausalLM.from_pretrained(
                 llama_model_path,
-                low_cpu_mem_usage=True,
+                low_cpu_mem_usage=False,
 
                 torch_dtype=torch.float16,
             )
