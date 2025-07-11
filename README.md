@@ -73,12 +73,15 @@ __Inference:__ During inference, BrainVLM organizes MRI combinations based on th
 To run inference, a test JSON file in the same format as [example_test.json](./example_test.json) is required.
 
 ### 2. Origanizing test json file.
+You can prepare data folder have same structre with ./examples, then run python [./generate_test_file.py](./generate_test_file.py) to get your test json.
+
 For patient1, it has 3 parts: 1) image_list; 2) modality_list; 3) patient metadata (_optional_).
 #### 1) image_list
 The image_list defines combinations of MRI sequences for inference. For patient1, available modalities include axial T1, T2, FLAIR, and T1c+, plus coronal and sagittal T1c+. Two combinations are created based on the construction rule, each containing paths to five .nii.gz files.
 
 #### 2) modality_list
 The modality_list specifies the modality names corresponding to each file path in the image_list combinations.
+
 
 ```
 /patient1
