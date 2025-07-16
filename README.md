@@ -1,4 +1,4 @@
-## A Vision Language Foundation Model for comprehensive Brain Tumor Diagnosis from preoperative multimodal data
+## A Vision Language Foundation Model for Comprehensive Brain Tumor Diagnosis from Preoperative Multimodal Data
 Yinong Wang †, Jianwen Chen †, Zhou Chen †, Shuwen Kuang †, Haoning Jiang, Yanzhao Shi, Huichun Yuan, Yan-ran (Joyce) Wang, Bing Wang, Lei Wu, Bin Tang, Li Meng, Baihua Luo, Bin Zhou, Wei Ding, Weiming Zhong, Wei Hou, Yuanbing Chen, Zhiping Wan, Wei Wang, Zhenkun Xiao, Wenwu Wan, Allen He, Yuyin Zhou, Longbo Zhang, Feifei Wang, Zhixiong Liu, Michael Iv, Xuan Gong*, Liangqiong Qu*
 
 † These authors contributed equally to this work.
