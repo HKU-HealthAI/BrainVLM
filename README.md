@@ -168,19 +168,7 @@ python eval.py --test_json_path=example_test.json  --model_ckpt_path=./ckpts/che
 ## Example Output
 #### For patient 1:
 ```
-combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'cor t1c+']
-
-combination_0: In Right cerebellum, there is a mass lesion with hypointense in T1, hyperintense in T2. After contrast administration, there is a heterogeneous enhancement. Compression of the fourth ventricle is observed. No midline structure shift. This patient was diagnosed with cranial and paraspinal nerve tumour. 
-```
-
-```
-combination modality: ['ax t1', 'ax t1c+', 'ax t2', 'ax t2f', 'sag t1c+']
-
-combination_1: In Right cerebellum, there is a mass lesion with hypointense in T1, hyperintense in T2, hyperintense in FLAIR. There is a hypointense T1 signal, hyperintense T2 signal, hyperintense FLAIR signal in Supratentorial white matter. After contrast administration, there is a marked heterogeneous enhancement. Compression of the fourth ventricle is observed. No midline structure shift. This patient was diagnosed with cranial and paraspinal nerve tumour. 
-```
-
-```
-Final diagnosis:  This patient was diagnosed with cranial and paraspinal nerve tumour
+Final diagnosis:  In Right cerebellum, there is a mass lesion with hypointense in T1, hyperintense in T2, hyperintense in FLAIR. There is a hypointense T1 signal, hyperintense T2 signal, hyperintense FLAIR signal in Supratentorial white matter. After contrast administration, there is a marked heterogeneous enhancement. Compression of the fourth ventricle is observed. No midline structure shift. This patient was diagnosed with cranial and paraspinal nerve tumour
 ```
 
 
