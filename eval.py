@@ -355,22 +355,24 @@ step1_list=[]
 step2_list=[]
 step3_list=[]
 
-image_encoder='2d'
-
 for k,v in data.items():
     image_list=v['image_list']
     modality_list=v['modality']
     combination_diagnosis=[]
+    combination_list=[]
     for comb_idx, (image_combination,modality_combination) in enumerate(zip(image_list,modality_list)):
         instruction,image_list,HR_image_list=images_process(image_combination,v,modality_combination)        
         answer=model.generate_step(image_list,instruction,HR_image_list)        
-        print(f'combination modality: {modality_combination}')
-        print(f'combination_{comb_idx}: {answer}')
+        combination_list.append(answer.split('This paitent')[0])
         combination_diagnosis.append(answer.split('.')[-2])
-    # Find the most common diagnosis from all combinations
+
     if len(combination_diagnosis) > 0:
         from collections import Counter
         most_common_diagnosis = Counter(combination_diagnosis).most_common(1)[0][0]
+        final_report = max(combination_list, key=len)
         print(f"Final diagnosis: {most_common_diagnosis}")
+        print(f"Final report: {final_report}")
         
+        
+
         
