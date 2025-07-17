@@ -42,6 +42,7 @@ BrainVLM comprises three key components: (1) a vision encoder for extracting ima
 | Llama3.1-8B Instruct   | Backbone language model of BrainVLM | [huggingface](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | Load in minigpt4/configs/models/minigpt4_vicuna0.yaml: line 18, "llama_model: " |
 | BiomedCLIP             | Vision Encoder | [huggingface](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) | BrainVLM automatically loads this checkpoint, no path needed |
 | BrainVLM (Diagnosis and Report) | Checkpoints for report and diagnosis | [google drive](https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link) | See section [Evaluation](#Evaluation)                                       |
+| BrainVLM (Diagnosis and Report) | Checkpoints for Reliable | [google drive]([https://drive.google.com/file/d/16yiqIvVVOANpI7OoxBKXvx5NPy0c625n/view?usp=drive_link](https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-globalnav-goto)) | See section [Evaluation](#Evaluation)                                       |
 
 ## Prepare test data files:
 
