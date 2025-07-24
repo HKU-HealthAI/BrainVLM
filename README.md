@@ -174,7 +174,7 @@ Finding: In Right cerebellum, there is a mass lesion with hypointense in T1, hyp
 There is a hypointense T1 signal, hyperintense T2 signal, hyperintense FLAIR signal in Supratentorial white matter. After
 contrast administration, there is a marked heterogeneous enhancement. Compression of the fourth ventricle is observed.
 No midline structure shift.
-Impression: This patient was diagnosed with cranial and paraspinal nerve tumour.
+Impression: A mass in right cerebellum, considering cranial and paraspinal nerve tumour.
 ```
 
 
