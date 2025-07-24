@@ -6,13 +6,14 @@ from scipy.ndimage import zoom
 import nibabel as nib
 import warnings
 warnings.filterwarnings('ignore')
+os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in [4])
 
 parser = argparse.ArgumentParser(description='BrainVLM Evaluation')
-parser.add_argument('--test_json_path', type=str, required=True, help='Path to the test json file')
-parser.add_argument('--model_ckpt_path ', type=str, required=True, help='Path to the model checkpoint')
+parser.add_argument('--json_file', type=str, required=True, help='Path to the test json file')
+parser.add_argument('--model_ckpt', type=str, required=True, help='Path to the model checkpoint')
 args = parser.parse_args()
-json_file = args.test_json_path
-model_ckpt = args.model_ckpt_path 
+json_file = args.json_file
+model_ckpt = args.model_ckpt
 
 
 import random
@@ -355,6 +356,8 @@ step1_list=[]
 step2_list=[]
 step3_list=[]
 
+image_encoder='2d'
+
 for k,v in data.items():
     image_list=v['image_list']
     modality_list=v['modality']
@@ -363,16 +366,15 @@ for k,v in data.items():
     for comb_idx, (image_combination,modality_combination) in enumerate(zip(image_list,modality_list)):
         instruction,image_list,HR_image_list=images_process(image_combination,v,modality_combination)        
         answer=model.generate_step(image_list,instruction,HR_image_list)        
-        combination_list.append(answer.split('This paitent')[0])
-        combination_diagnosis.append(answer.split('.')[-2])
+        combination_list.append(answer.split('This patient')[0])
+        combination_diagnosis.append(answer.split('This patient was diagnosed with ')[-1].split('.')[0])
 
     if len(combination_diagnosis) > 0:
         from collections import Counter
         most_common_diagnosis = Counter(combination_diagnosis).most_common(1)[0][0]
         final_report = max(combination_list, key=len)
-        print(f"Final diagnosis: {most_common_diagnosis}")
-        print(f"Final report: {final_report}")
+        location=final_report.split(',')[0].lower()
+        print(f"Findings: {final_report}")
+        print(f"Impression: A mass {location}, considering {most_common_diagnosis}")
         
-        
-
         
