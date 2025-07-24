@@ -375,6 +375,6 @@ for k,v in data.items():
         final_report = max(combination_list, key=len)
         location=final_report.split(',')[0].lower()
         print(f"Findings: {final_report}")
-        print(f"Impression: A mass {location}, considering {most_common_diagnosis}")
+        print(f"Impression: A mass {location}, considering {most_common_diagnosis}.")
         
         
