@@ -806,7 +806,7 @@ class LlamaPreTrainedModel(PreTrainedModel):
     _supports_static_cache = True
 
     def set_index(self,start_index_list,end_index_list):
-        self.start_visual_token_idx = start_index_list # 记录每个volume token的开始位置 example [2, 35, 68, 101]
+        self.start_visual_token_idx = start_index_list # Record the start index of each volume token, e.g., [2, 35, 68, 101]
         self.end_visual_token_idx = end_index_list    
     
     def _init_weights(self, module):
@@ -897,12 +897,12 @@ LLAMA_INPUTS_DOCSTRING = r"""
 
 import matplotlib.pyplot as plt
 def visualize_casual_mask(mask, img_path, visualize_idx):
-    # 将torch张量转换为numpy数组
+    # Convert the torch tensor to a numpy array
     tensor_np = mask.cpu().numpy()
 
-    # 使用matplotlib可视化
-    plt.imshow(tensor_np, cmap='viridis')  # 你可以选择不同的cmap（颜色映射）来改变图像显示效果
-    # plt.colorbar()  # 添加颜色条
+    # Visualize using matplotlib
+    plt.imshow(tensor_np, cmap='viridis')  # You can choose a different cmap (color map) to change the display effect of the image
+    # plt.colorbar()  # Add color bar
     # plt.imsave() 
     plt.savefig(f"{img_path}/{visualize_idx}.png", bbox_inches='tight', pad_inches=0)
 
@@ -938,7 +938,7 @@ class LlamaModel(LlamaPreTrainedModel):
         return self.embed_tokens
 
     def set_index(self,start_index_list,end_index_list):
-        self.start_visual_token_idx = start_index_list # 记录每个volume token的开始位置 example [2, 35, 68, 101]
+        self.start_visual_token_idx = start_index_list # Record the start index of each volume token, e.g., [2, 35, 68, 101]
         self.end_visual_token_idx = end_index_list  
 
     def set_input_embeddings(self, value):
@@ -1005,26 +1005,26 @@ class LlamaModel(LlamaPreTrainedModel):
             attention_mask, inputs_embeds, cache_position, past_key_values, output_attentions
         )  # 1, 1, 224, 224 
 
-        # 2024.09.09 Yanzhao Shi 修改 让同一个volume（32张slice）内的visual tokens的能够互相全都看到  对于2D数据来说，计算前后没有差别，因为只有一个visual token，不区分volume
+        # Modification on 2024.09.09 Yanzhao Shi: Allow visual tokens within the same volume (32 slices) to fully attend to each other. For 2D data, this does not make a difference, as there is only one visual token and no volume distinction.
         # mask_path = "minigpt4/datasets/datasets/mask_visualize"
         if start_visual_idx==None:
             start_visual_idx=self.start_visual_token_idx
             end_visual_idx=self.end_visual_token_idx
         for volume_idx in range(len(start_visual_idx)):  
-            # 读取当前volume的visual token 的起始位置和终止位置，用来调整掩码
+            # Read the start and end positions of the visual tokens for the current volume, used to adjust the mask
             start_volume_token_idx, end_volume_token_idx = start_visual_idx[volume_idx], end_visual_idx[volume_idx]
             causal_mask[0][0][start_volume_token_idx:end_volume_token_idx, start_volume_token_idx:end_volume_token_idx] = 0
-        # #     # 下面的代码仅在调试时候用，可视化整合后的mask
+        # #     # The following code is for debugging only, used to visualize the integrated mask
             # visualize_casual_mask(causal_mask.squeeze(), mask_path, volume_idx)
             
 
-        # 以前的掩码版本
-        # 修改 此处的Casual Mask，让visual tokens的能够互相全都看到,这里的mask下三角是0，上三角是负无穷，通过加到attention score的方式屏蔽上三角element的value
+        # Previous mask version
+        # Modify the Casual Mask here so that visual tokens can fully attend to each other; in this mask the lower triangle is 0 and the upper triangle is negative infinity, so as to mask out upper triangle elements by adding to the attention score
         # start_visual_token_idx, end_visual_token_idx = start_visual_idx, end_visual_idx
-        # for visual_idx_row in range(start_visual_token_idx, end_visual_token_idx):  # 遍历行
-        #     for visual_idx_col in range(start_visual_token_idx, end_visual_token_idx):  # 遍历列
-        #         causal_mask[0][0][visual_idx_row][visual_idx_col] = 0  # 将visual token的位置都设置成0，使visual tokens能互相看到
-        # 修改完成
+        # for visual_idx_row in range(start_visual_token_idx, end_visual_token_idx):  # traverse rows
+        #     for visual_idx_col in range(start_visual_token_idx, end_visual_token_idx):  # traverse columns
+        #         causal_mask[0][0][visual_idx_row][visual_idx_col] = 0  # set these positions to 0, making all visual tokens see each other
+        # Modification done
 
         hidden_states = inputs_embeds
         
@@ -1053,7 +1053,7 @@ class LlamaModel(LlamaPreTrainedModel):
                     cache_position,
                     position_embeddings,
                 )
-            else:  # 走这里
+            else:  # Go here
                 layer_outputs = decoder_layer(
                     hidden_states,
                     attention_mask=causal_mask,
@@ -1207,7 +1207,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         self.model = decoder
 
     def set_index(self,start_index_list,end_index_list):
-        # self.start_visual_token_idx = start_index_list # 记录每个volume token的开始位置 example [2, 35, 68, 101]
+        # self.start_visual_token_idx = start_index_list # Record the start index of each volume token, e.g., [2, 35, 68, 101]
         # self.end_visual_token_idx = end_index_list   
         self.model.set_index(start_index_list,end_index_list)
     

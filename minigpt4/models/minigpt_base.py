@@ -693,26 +693,7 @@ class MiniGPTBase(BaseModel):
             # only replace token if prompt has already been generated
             next_token = torch.where(input_text_mask[:, cur_pos], tokens[:, cur_pos], next_token)
             import copy
-            # if calculate_prob:                
-            #     probs = torch.softmax(logits[:, -1], dim=-1)
-            #     index_list=[15,16,17,18,19,20,21,22,23,24,605,806,717,1032]
-            #     new_logits=copy.deepcopy(logits[0][0])
-            #     tumor_list=[new_logits[k] for k in index_list]
-            #     tumor_list = torch.stack(tumor_list)
-            #     probabilities = torch.softmax(tumor_list, dim=0)
-            #     token_dict={probabilities[k]:index_list[k] for k in range(len(index_list))}  
-            #     top_2=sorted(token_dict.keys(), reverse=True)[:2]
-            #     # print(top_2[0].item(),top_2[1].item())
-            #     top1=token_dict[top_2[0]]
-            #     top2=token_dict[top_2[1]]
-            #     print(f'<class_{self.llama_tokenizer.decode(top1)}>',top_2[0].item(),f'<class_{self.llama_tokenizer.decode(top2)}>',top_2[1].item())
-            #     with_probs=False
-            #     calculate_prob=False
-            # if next_token==449:
-            #     with_probs=True
-            # if with_probs:
-            #     if next_token==62:
-            #         calculate_prob=True
+
             
             tokens[:, cur_pos] = next_token
             next_token_embed = self.llama_model.get_input_embeddings()(next_token)

@@ -6,24 +6,16 @@ from scipy.ndimage import zoom
 import nibabel as nib
 import warnings
 warnings.filterwarnings('ignore')
-os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in [4])
 
-parser = argparse.ArgumentParser(description='BrainVLM Evaluation')
-parser.add_argument('--json_file', type=str, required=True, help='Path to the test json file')
-parser.add_argument('--model_ckpt', type=str, required=True, help='Path to the model checkpoint')
-args = parser.parse_args()
-json_file = args.json_file
-model_ckpt = args.model_ckpt
+from collections import Counter
 
-
-import random
 import numpy as np
 from PIL import Image
 import torch
 import minigpt4.tasks as tasks
 import torchvision.transforms as transforms
 from monai.transforms import Compose, RandRotate, RandFlip, ToTensor,EnsureType,RandSpatialCrop,Resize,Orientation, CenterSpatialCrop,ScaleIntensityRange
-
+import random
 from minigpt4.tasks import *
 from minigpt4.processors import *
 from torchvision.transforms.functional import InterpolationMode
@@ -34,6 +26,14 @@ from collections import Counter
 import torch.nn.functional as F
 
 from minigpt4.common.config import Config
+
+
+parser = argparse.ArgumentParser(description='BrainVLM Evaluation')
+parser.add_argument('--json_file', type=str, required=True, help='Path to the test json file')
+parser.add_argument('--model_ckpt', type=str, required=True, help='Path to the model checkpoint')
+args = parser.parse_args()
+json_file = args.json_file
+model_ckpt = args.model_ckpt
 
 def interpolate_images(images, target_count=32):
 
@@ -57,7 +57,7 @@ def process_modality_name(modality_list):
         for mod_item in modality_list:  
             item_name = ""  
             mod_item = mod_item.lower()
-            if 't1 c+' in mod_item or 't1c' in mod_item  or 't1+c' in mod_item or ('t1' in mod_item and '+C' in mod_item):
+            if 't1 c+' in mod_item or 't1c' in mod_item  or 't1+c' in mod_item or ('t1' in mod_item and '+c' in mod_item):
                 item_name += "t1c"
             elif ('t1f' in mod_item or 't1 f' in mod_item) and 'fs' not in mod_item:
                 item_name += "t1f"
@@ -370,7 +370,6 @@ for k,v in data.items():
         combination_diagnosis.append(answer.split('This patient was diagnosed with ')[-1].split('.')[0])
 
     if len(combination_diagnosis) > 0:
-        from collections import Counter
         most_common_diagnosis = Counter(combination_diagnosis).most_common(1)[0][0]
         final_report = max(combination_list, key=len)
         location=final_report.split(',')[0].lower()

@@ -1,3 +1,5 @@
+
+
 """
  Copyright (c) 2022, salesforce.com, inc.
  All rights reserved.
@@ -81,22 +83,14 @@ def interpolation_padding_key_frame(tensor, target_length=32*3):
     current_length = tensor.size(0)
     if current_length >= target_length:
         return tensor
-    # add a batch dimension and channel dimension to use interpolate
     tensor=tensor.reshape(1,-1,tensor.size(-2),tensor.size(-1))
     tensor = tensor.unsqueeze(0)#1,12,3,224,224
-    # print('tensor',tensor.shape)
-    #[32,1,256,256]
-    # print(target_length, tensor.size(-3),tensor.size(-2), tensor.size(-1))
+
     interpolated_tensor = F.interpolate(tensor, size=(target_length, tensor.size(-2), tensor.size(-1)), mode='trilinear', align_corners=False)
     
-    # expanded_size = (target_length, tensor.size(-3),tensor.size(-2), tensor.size(-1))
-
-    # interpolate
-    # interpolated_tensor = F.interpolate(tensor, size=expanded_size[1:], mode='nearest').squeeze(0)
 
     interpolated_tensor=interpolated_tensor.squeeze(0).reshape(32,3,224,224)
-    # remove the added dimension
-    # interpolated_tensor = interpolated_tensor.squeeze(0)
+
     return interpolated_tensor
 
 
@@ -115,7 +109,7 @@ class __DisplMixin:
 
 def random_motion(images):
     degrees, translation = 10, 10
-    B, H, W = images.shape  # 批量大小，高度和宽度
+    B, H, W = images.shape  # batch size, height, and width
     angle = torch.randn(B).cuda() * degrees
     trans_x = torch.randn(B).cuda() * translation
     trans_y = torch.randn(B).cuda() * translation
@@ -131,19 +125,19 @@ def random_motion(images):
     return transformed_images
 
 def random_affine_transform(images_embeddings_, degrees=10, translate=(0.1, 0.1)):
-    # 随机选择角度和位移量
+    # Randomly select angles and translation values
     angle = torch.empty(images_embeddings_.size(0)).uniform_(-degrees, degrees).cuda()
     translations = (torch.empty(images_embeddings_.size(0), 2).uniform_(-translate[0], translate[0]).cuda(),
                     torch.empty(images_embeddings_.size(0), 2).uniform_(-translate[1], translate[1]).cuda())
 
-    # 使用 torchvision 的 transforms 来应用仿射变换
+    # Use torchvision.transforms to apply affine transformation
     grid = F.affine_grid(
         theta=torch.zeros((images_embeddings_.size(0), 2, 3)).cuda(), 
         size=images_embeddings_.size(),
         align_corners=False
     )
 
-    # 将图像平移和旋转
+    # Apply translation and rotation to image
     for i in range(images_embeddings_.size(0)):
         theta = torch.tensor([
             [torch.cos(torch.deg2rad(angle[i])), -torch.sin(torch.deg2rad(angle[i])), translations[0][i][0]],
@@ -154,26 +148,26 @@ def random_affine_transform(images_embeddings_, degrees=10, translate=(0.1, 0.1)
     return F.grid_sample(images_embeddings_, grid, mode='bilinear', padding_mode='zeros', align_corners=False)
 
 def add_random_noise(images_embeddings_, mean=0, std=0.1):
-    # 随机生成噪声并加到图像上
+    # Randomly generate noise and add it to the image
     noise = torch.randn_like(images_embeddings_).cuda() * std + mean
     return images_embeddings_ + noise
 
 def adjust_brightness_contrast(images_embeddings_, brightness_factor=0.5, contrast_factor=0.5):
-    # 调整亮度和对比度
+    # Adjust brightness and contrast
     mean = images_embeddings_.mean(dim=(1, 2, 3), keepdim=True)
-    images_embeddings_ = (images_embeddings_ - mean) * contrast_factor + mean  # 调整对比度
-    images_embeddings_ = images_embeddings_ * brightness_factor  # 调整亮度
+    images_embeddings_ = (images_embeddings_ - mean) * contrast_factor + mean  # adjust contrast
+    images_embeddings_ = images_embeddings_ * brightness_factor  # adjust brightness
     return images_embeddings_
 
 def random_brightness_tensor(image_tensor):
     """
-    对输入图像张量应用随机亮度变换
+    Apply random brightness transformation to the input image tensor
     """
-    # 生成一个 0.5 到 1 之间的随机因子
+    # Generate a random factor between 0.5 and 1.0
     factor = torch.empty(1).uniform_(0.5, 1.0).item()
-    # 调整图像亮度
+    # Adjust image brightness
     # print(factor)
-    brightened_image = torch.clamp(image_tensor * factor, 0, 1)  # 假设张量在 [0, 1] 范围内
+    brightened_image = torch.clamp(image_tensor * factor, 0, 1)  # Assume the tensor is in the [0, 1] range
     return brightened_image
 
 
@@ -215,7 +209,7 @@ class xiangya_training(BaseDataset, __DisplMixin):
                 with open(path,'r',encoding='utf-8') as f:
                     data=json.load(f)
                 
-                #germ cell, copy
+                # germ cell, copy
                 dataset_num=0
                 for k,v in data.items():  
                     self.cur_image_path_list.append(k+str(i))
@@ -228,7 +222,7 @@ class xiangya_training(BaseDataset, __DisplMixin):
                     tumor_count = Counter(self.cur_tumor_list)
                     max_samples = max(tumor_count.values())
                     expansion_factors = {tumor: min(max_samples // count,3) for tumor, count in tumor_count.items()}
-                    #max(max_samples // count,,2)
+                    # max(max_samples // count,,2)
                     print('expansion_factors')
                     print(expansion_factors)
                     expanded_image_list=[]
@@ -238,12 +232,10 @@ class xiangya_training(BaseDataset, __DisplMixin):
                         if "Germ cell tumour" in tumor:
                             expanded_image_list.extend([image] * 3)
                             expanded_tumor_list.extend([value] * 3)
-                            print(tumor)
 
                         elif "Choroid plexus" in tumor:
                             expanded_image_list.extend([image] * 4)
-                            expanded_tumor_list.extend([value] * 4)#看起来没用
-                            print(tumor)
+                            expanded_tumor_list.extend([value] * 4) # Looks useless
                         else:
                             expanded_image_list.extend([image] * expansion_factor)
                             expanded_tumor_list.extend([value] * expansion_factor)
@@ -287,8 +279,8 @@ class xiangya_training(BaseDataset, __DisplMixin):
         self.transform = Compose([
             Orientation(axcodes="RAS"),
             ScaleIntensityRange(a_min=0, a_max=255, b_min=0.0, b_max=1.0, clip=False),
-            RandFlip(spatial_axis=0, prob=0.5),   # 随机翻转
-            RandRotate(range_x=10, prob=0.5),     # 随机旋转
+            RandFlip(spatial_axis=0, prob=0.5),   # Random horizontal flip
+            RandRotate(range_x=10, prob=0.5),     # Random rotation
             # CenterSpatialCrop((224,224)),
             ToTensor(),
         ])
@@ -364,17 +356,17 @@ class xiangya_training(BaseDataset, __DisplMixin):
                             if "-year" in Age:  # handle "65-year" and "45-year-old"
                                 Age_prefix = float(Age.split("-")[0])
                                 Age_group = self.age_group_search(Age_prefix, image_dict)  # assign group token to Age
-                            elif "-" in Age:  # some ages are given by age groups, like "10-15", so we take the average of 10 and 15 as the patient's age
+                            elif "-" in Age:  # ages like "10-15", take the average of 10 and 15 as the patient's age
                                 Age_1, Age_2 = Age.split("-")[0], Age.split("-")[1]
                                 Age_avg = (float(Age_1) + float(Age_2))/2
                                 Age_group = self.age_group_search(Age_avg, image_dict)  # assign group token to Age
-                            elif "Young" in Age:  # some strange combinations like "\"Young\"", but there is "Young" in it, all are assigned to 20-40
+                            elif "Young" in Age:  # combinations like "\"Young\"", all are assigned to 20-40
                                 Age_group = "<age_group_2>"
                             elif Age == "15y":
                                 Age_group = "<age_group_1>"
-                            elif "~" in Age:  # some ages are given by age groups, like "5~10", so we take the average of 5 and 10 as the patient's age
+                            elif "~" in Age:  # ages like "5~10", take the average of 5 and 10 as the patient's age
                                 Age_1, Age_2 = Age.split("~")[0], Age.split("~")[1]
-                                Age_avg = (float(Age_1) + float(Age_2))/2
+                            elif "~" in Age:  # some ages are given by age groups, like "5~10", so we take the average of 5 and 10 as the patient's age
                                 Age_group = self.age_group_search(Age_avg, image_dict)  # assign group token to Age
                             elif Age == "19`":
                                 Age_group = "<age_group_1>"
@@ -440,9 +432,9 @@ class xiangya_training(BaseDataset, __DisplMixin):
                 item_name += "t2"
             # not classified to above modalities
             else:
-                item_name += "unk_modi"  # 表示unknown 该信息没有，自动放到最后
+                item_name += "unk_modi"  # means unknown, if this information does not exist, automatically put it at the end
             
-            item_name += " "  # 空一格
+            item_name += " "  # leave a space
             # add view information
             # justify ax
             if 'ax' in mod_item or 'tra' in mod_item:
@@ -486,7 +478,7 @@ class xiangya_training(BaseDataset, __DisplMixin):
         t2_index_list=[]
         other_index_list=[]
         same_view=[]
-        # 分开收集t1，t1c，t2模态和other 包括index和name
+        # Separately collect t1, t1c, t2 modalities and others, including their indices and names
         for index, modality in enumerate(modality_list):
             if 't1c+' in modality:
                 t1c.append(modality)
@@ -498,24 +490,24 @@ class xiangya_training(BaseDataset, __DisplMixin):
                 t2_index_list.append(index)
             else:
                 other_index_list.append(index)
-        # 按顺序排放，顺序是t1c，t1，t2，other
-        total_index_list=t1c_index_list+t1_index_list+t2_index_list+other_index_list  # 获取所有模态的index
+        # Arrange in order: t1c, t1, t2, other
+        total_index_list=t1c_index_list+t1_index_list+t2_index_list+other_index_list  # Get all modality indices
         t1=set(t1)
         t1c=set(t1c)
         for sub_t1 in t1:
-            if sub_t1 +'c+' in t1c:  # 想判断一下有没有相同view的t1和t1c
-                # 添加相同view的t1 and t1c
+            if sub_t1 +'c+' in t1c:  # Check if there are t1 and t1c with the same view
+                # Add t1 and t1c with the same view
                 same_view.append({'t1':[i for i, x in enumerate(modality_list) if x == sub_t1],'t1c':[i for i, x in enumerate(modality_list) if x == sub_t1+'c+']})
         index_list=[]
-        if same_view!=[]:  #如果有相同view的t1和t1c
-            # 把同一个view的t1，t1c，以及 随机的一个t2（不包含t2f） 作为选择输入模型的模态，并存入index_list
+        if same_view!=[]:  # If there are t1 and t1c with the same view
+            # Select t1 and t1c of the same view, and randomly select a t2 (not including t2f) as the input modalities for the model, and store into index_list
             combination=random.choice(same_view)
             index_list.append(random.choice(combination['t1c']))
-            index_list.append(random.choice(combination['t1']))  # 由于没有相同模态的情况，random select t1c and t1
+            index_list.append(random.choice(combination['t1']))  # If there is no matching modality, randomly select t1c and t1
             # if t2_index_list!=[]:
             #     index_list.append(random.choice(t2_index_list))
 
-            # 这段代码的意思就是，把index_list里的modality数量补成4个
+            # This code means to supplement the number of modalities in index_list to 4
             total_index_list=[i for i in total_index_list if i not in index_list]
             last_sample=random.sample(total_index_list,(use_num-len(index_list)))
             for sample in last_sample:
@@ -603,20 +595,20 @@ class xiangya_training(BaseDataset, __DisplMixin):
             # start_time_volume_LR = time.time()
 
             image_sequence=[]
-            HR_image_sequence = []  # 存储32个slice的HR patches，共128个
+            HR_image_sequence = []  # Store HR patches for 32 slices, total 128
             image_shape = image_array[0].shape  # (630, 637, 3)
             # convert to grayscale
-            for image in image_array:  # image_array (32, 630, 637, 3) image 是 630, 637, 3
+            for image in image_array:  # image_array (32, 630, 637, 3), each image is 630, 637, 3
                 if self.image_encoder=='2d':
                     image = Image.fromarray(image).convert('L')  # image PIL object
                     image_sequence.append(image)
 
             if self.image_encoder=='2d':
-                image_sequence = np.stack(image_sequence, axis=0)  # 转np array len(image_sequence) 32    (32, 630, 637)
+                image_sequence = np.stack(image_sequence, axis=0)  # convert to numpy array, len(image_sequence) 32, (32, 630, 637)
                 
                 image_sequence = self.transform(np.expand_dims(image_sequence, axis=1))  # [32, 1, 630, 637]
 
-                aug_version = 3  # or 2  (1 represents using the previous tio library that does not support GPU, 2 represents supporting GPU simulation method, 3 represents mixing 1 and 2)
+                aug_version = 3  # or 2  (1 means using previous tio library without GPU support, 2 supports GPU simulation method, 3 mixes 1 and 2)
                 is_visualize = 0  # or 0 
 
                 image_sequence=image_sequence.reshape(1,32,image_sequence.shape[-2],image_sequence.shape[-1])
@@ -635,12 +627,12 @@ class xiangya_training(BaseDataset, __DisplMixin):
                 aug_probability = np.random.rand()  
                 if aug_probability < 0.3:
                     if aug_version == 1:
-                        # the data augmentation used in the previous code is tio library, which does not support GPU
+                        # The data augmentation used in previous code is the tio library, which does not support GPU
                         aug_transform = random.sample(self.aug_transform_list, 1)[0]
                         image_sequence = aug_transform(image_sequence).squeeze(1)  # 32, 630, 637
                         image_sequence = image_sequence.unsqueeze(1)  # 32, 1, 630, 637
                     elif aug_version == 2:
-                        # simulate tio's data augmentation method  support GPU
+                        # Simulate tio's data augmentation method to support GPU
                         image_sequence = image_sequence.cuda()  
                         aug_transform = random.sample(self.aug_transform_list2, 1)[0]
                         image_sequence = aug_transform(image_sequence).squeeze(1)
@@ -665,9 +657,9 @@ class xiangya_training(BaseDataset, __DisplMixin):
 
                 
 
-                #### 处理HR图像 ####
+                #### Process HR images ####
                 if HR_resolution == True:
-                    # 循环每张图片
+                    # Iterate over each image
                     # image_sequence=self.downsample_list[resize_num](image_sequence)
                     num_images, LR_h, LR_w = image_sequence.shape  # ([32, 630, 637])
                     
@@ -675,7 +667,7 @@ class xiangya_training(BaseDataset, __DisplMixin):
                     
                     
                     for image_idx in range(num_images):
-                        # 对每张图 [630, 637] 进行切分 
+                        # Slice each image [630, 637] 
                         HR_h, HR_w = LR_h // 2, LR_w // 2  # HR target size for each block HR_h 315  HR_w 318
                         HR_image_1 = image_sequence[image_idx][:HR_h, :HR_w]  # lefttop 315, 318
                         HR_image_2 = image_sequence[image_idx][HR_h:LR_h, :HR_w]  # leftbottom 315, 318
@@ -690,7 +682,7 @@ class xiangya_training(BaseDataset, __DisplMixin):
                         HR_image_3 = F.interpolate(HR_image_3.unsqueeze(0).unsqueeze(0), size=(224, 224), mode='bicubic', align_corners=False).reshape(224, 224)
                         HR_image_4 = F.interpolate(HR_image_4.unsqueeze(0).unsqueeze(0), size=(224, 224), mode='bicubic', align_corners=False).reshape(224, 224)
 
-                        HR_images = torch.stack([HR_image_1, HR_image_2, HR_image_3, HR_image_4], dim=0)  # 4, 224, 224  source图里的全部HR patch
+                        HR_images = torch.stack([HR_image_1, HR_image_2, HR_image_3, HR_image_4], dim=0)  # 4, 224, 224  all HR patches in source images
                         HR_image_sequence += HR_images
                 HR_image_sequence = torch.stack(HR_image_sequence, dim=0)
                 HR_image_sequence = HR_image_sequence.repeat(3,1,1).view(3, -1, 224, 224).permute(1, 0, 2, 3)  # [128, 3, 224, 224]
@@ -765,4 +757,3 @@ class xiangya_training(BaseDataset, __DisplMixin):
             "HR_image_list":HR_image_list.cpu(),  # need to be transferred to cpu, otherwise the loader will report an error
             "HR_resolution":HR_resolution
         }
-
